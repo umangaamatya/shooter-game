@@ -7,8 +7,10 @@ const SpaceGame = () => {
   const spaceshipImg = useRef(new Image());
   const missileImg = useRef(new Image());
 
-  const canvasWidth = 400;
-  const canvasHeight = 600;
+  const [canvasSize, setCanvasSize] = React.useState({
+    width: window.innerWidth < 500 ? window.innerWidth - 20 : 400,
+    height: window.innerHeight < 700 ? window.innerHeight - 100 : 600,
+  });
   const spaceshipWidth = 40;
   const spaceshipHeight = 40;
   const missileWidth = 15;
@@ -16,8 +18,8 @@ const SpaceGame = () => {
 
   // Game state refs
   const spaceship = useRef({
-    x: canvasWidth / 2 - spaceshipWidth / 2,
-    y: canvasHeight - spaceshipHeight - 10,
+    x: canvasSize.width / 2 - spaceshipWidth / 2,
+    y: canvasSize.height - spaceshipHeight - 10,
     speed: 5,
   });
   const bullets = useRef([]);
@@ -70,8 +72,16 @@ const SpaceGame = () => {
       rightPressed.current = false;
     };
 
+    const handleResize = () => {
+    setCanvasSize({
+        width: window.innerWidth < 500 ? window.innerWidth - 20 : 400,
+        height: window.innerHeight < 700 ? window.innerHeight - 100 : 600,
+      });
+    };
+
     window.addEventListener('keydown', keyDownHandler);
     window.addEventListener('keyup', keyUpHandler);
+    window.addEventListener('resize', handleResize);
     canvas.addEventListener('touchstart', handleTouchStart);
     canvas.addEventListener('touchend', handleTouchEnd);
 
@@ -89,7 +99,7 @@ const SpaceGame = () => {
       if (leftPressed.current && spaceship.current.x > 0) {
         spaceship.current.x -= spaceship.current.speed;
       }
-      if (rightPressed.current && spaceship.current.x + spaceshipWidth < canvasWidth) {
+      if (rightPressed.current && spaceship.current.x + spaceshipWidth < canvasSize.width) {
         spaceship.current.x += spaceship.current.speed;
       }
 
@@ -100,7 +110,7 @@ const SpaceGame = () => {
 
       if (Math.random() < 0.02) {
         enemies.current.push({
-          x: Math.random() * (canvasWidth - 40),
+          x: Math.random() * (canvasSize.width - 40),
           y: 0,
           width: 40,
           height: 40,
@@ -109,7 +119,7 @@ const SpaceGame = () => {
 
       enemies.current.forEach((enemy, i) => {
         enemy.y += 2;
-        if (enemy.y > canvasHeight) enemies.current.splice(i, 1);
+        if (enemy.y > canvasSize.height) enemies.current.splice(i, 1);
 
         bullets.current.forEach((bullet, j) => {
           if (
@@ -136,7 +146,7 @@ const SpaceGame = () => {
     };
 
     const draw = (ctx) => {
-      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+      ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
 
       ctx.drawImage(
         spaceshipImg.current,
@@ -166,8 +176,8 @@ const SpaceGame = () => {
       ctx.fillText(`Score: ${score.current}`, 10, 30);
 
       if (gameOver.current) {
-        ctx.fillText('Game Over', canvasWidth / 2 - 60, canvasHeight / 2);
-        ctx.fillText(`Final Score: ${score.current}`, canvasWidth / 2 - 70, canvasHeight / 2 + 30);
+        ctx.fillText('Game Over', canvasSize.width / 2 - 60, canvasSize.height / 2);
+        ctx.fillText(`Final Score: ${score.current}`, canvasSize.width / 2 - 70, canvasSize.height / 2 + 30);
       }
     };
 
@@ -176,22 +186,34 @@ const SpaceGame = () => {
     return () => {
       window.removeEventListener('keydown', keyDownHandler);
       window.removeEventListener('keyup', keyUpHandler);
+      window.removeEventListener('resize', handleResize);
       canvas.removeEventListener('touchstart', handleTouchStart);
       canvas.removeEventListener('touchend', handleTouchEnd);
     };
   }, []);
 
   return (
-    <div style={{ textAlign: 'center', backgroundColor: 'black', height: '100vh', color: '#39ff14' }}>
+    <div className="space-game-container">
       <h1>Evil Eye Armada</h1>
-      <canvas ref={canvasRef} width={400} height={600} style={{ border: '2px solid #39ff14' }} />
-      <button onClick={() => window.location.reload()} style={{ marginTop: '10px' }}>
+
+      <canvas
+        ref={canvasRef}
+        width={canvasSize.width}
+        height={canvasSize.height}
+        className="space-game-canvas"
+      />
+
+      <button
+        className="space-game-button"
+        onClick={() => window.location.reload()}
+      >
         Restart Game
       </button>
+
       <div>
         <button
           id="shoot-btn"
-          style={{ fontSize: '24px', marginTop: '20px' }}
+          className="shoot-btn"
           onTouchStart={() => (spacePressed.current = true)}
           onTouchEnd={() => (spacePressed.current = false)}
         >
