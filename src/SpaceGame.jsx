@@ -30,38 +30,35 @@ const SpaceGame = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return; // safety check
+    if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
-    if (!ctx) return; // handle null context
+    if (!ctx) return;
 
-    // Load images once
     spaceshipImg.current.src = spaceshipImage;
     missileImg.current.src = missileImage;
 
-    // Set initial canvas size based on screen
     const width = window.innerWidth < 500 ? window.innerWidth - 20 : 400;
     const height = window.innerHeight < 700 ? window.innerHeight - 100 : 600;
     setCanvasSize({ width, height });
 
-    // Input handlers
     const keyDownHandler = (e) => {
-    if (e.key === 'ArrowLeft') leftPressed.current = true;
-    if (e.key === 'ArrowRight') rightPressed.current = true;
-    if (e.key === ' ' && canShoot.current) {
-      spacePressed.current = true;
-      canShoot.current = false; // block further shots until key is released
-    }
-  };
+      if (e.key === 'ArrowLeft') leftPressed.current = true;
+      if (e.key === 'ArrowRight') rightPressed.current = true;
+      if (e.key === ' ' && canShoot.current) {
+        spacePressed.current = true;
+        canShoot.current = false;
+      }
+    };
 
-  const keyUpHandler = (e) => {
-    if (e.key === 'ArrowLeft') leftPressed.current = false;
-    if (e.key === 'ArrowRight') rightPressed.current = false;
-    if (e.key === ' ') {
-      spacePressed.current = false;
-      canShoot.current = true; // allow shooting again on next press
-    }
-  };
+    const keyUpHandler = (e) => {
+      if (e.key === 'ArrowLeft') leftPressed.current = false;
+      if (e.key === 'ArrowRight') rightPressed.current = false;
+      if (e.key === ' ') {
+        spacePressed.current = false;
+        canShoot.current = true;
+      }
+    };
 
     const shoot = () => {
       if (spacePressed.current) {
@@ -71,7 +68,7 @@ const SpaceGame = () => {
           width: missileWidth,
           height: missileHeight,
         });
-        spacePressed.current = false; // reset to prevent double-shot
+        spacePressed.current = false;
       }
     };
 
@@ -88,7 +85,7 @@ const SpaceGame = () => {
     };
 
     const handleResize = () => {
-    setCanvasSize({
+      setCanvasSize({
         width: window.innerWidth < 500 ? window.innerWidth - 20 : 400,
         height: window.innerHeight < 700 ? window.innerHeight - 100 : 600,
       });
@@ -100,10 +97,8 @@ const SpaceGame = () => {
     canvas.addEventListener('touchstart', handleTouchStart);
     canvas.addEventListener('touchend', handleTouchEnd);
 
-    // Game loop
     const loop = () => {
       if (gameOver.current) return;
-
       update();
       draw(ctx);
       shoot();
@@ -209,65 +204,66 @@ const SpaceGame = () => {
 
   return (
     <div className="space-game-container">
-    <h1>Evil Eye Armada</h1>
+      <h1>Evil Eye Armada</h1>
 
-    <canvas
-      ref={canvasRef}
-      width={canvasSize.width}
-      height={canvasSize.height}
-      className="space-game-canvas"
-    />
+      <canvas
+        ref={canvasRef}
+        width={canvasSize.width}
+        height={canvasSize.height}
+        className="space-game-canvas"
+      />
 
-    {/* GameBoy-style Controls */}
-    <div className="gameboy-controls">
-      {/* Left side controls */}
-      <div className="control-left">
-        <button
-          className="control-btn"
-          onTouchStart={() => (leftPressed.current = true)}
-          onTouchEnd={() => (leftPressed.current = false)}
-        >
-          ⬅
-        </button>
-        <button
-          className="control-btn"
-          onTouchStart={() => (rightPressed.current = true)}
-          onTouchEnd={() => (rightPressed.current = false)}
-        >
-          ➡
-        </button>
-      </div>
+      <div className="gameboy-controls">
+        <div className="control-group control-left">
+          <button
+            className="control-btn"
+            onTouchStart={() => (leftPressed.current = true)}
+            onTouchEnd={() => (leftPressed.current = false)}
+          >
+            ⬅
+          </button>
+          <button
+            className="control-btn"
+            onTouchStart={() => (rightPressed.current = true)}
+            onTouchEnd={() => (rightPressed.current = false)}
+          >
+            ➡
+          </button>
+        </div>
 
-      {/* Center restart */}
-      <div className="control-center">
-        <button
-          className="control-btn restart-btn"
-          onClick={() => window.location.reload()}
-        >
-          🔁 Restart
-        </button>
-      </div>
+        <div className="control-group control-center">
+          <button
+            className="control-btn restart-btn"
+            onClick={() => window.location.reload()}
+          >
+            🔁 Restart
+          </button>
+        </div>
 
-      {/* Right side fire button */}
-      <div className="control-right">
-        <button
-          className="control-btn fire-btn"
-          onTouchStart={() => {
-            if (canShoot.current) {
-              spacePressed.current = true;
-              canShoot.current = false;
-            }
-          }}
-          onTouchEnd={() => {
-            spacePressed.current = false;
-            canShoot.current = true;
-          }}
-        >
-          🚀 Fire
-        </button>
+        <div className="control-group control-right">
+          <button
+            className="control-btn fire-btn"
+            onTouchStart={() => {
+              if (canShoot.current) {
+                spacePressed.current = true;
+                canShoot.current = false;
+
+                // Trigger vibration on touch start
+                if ('vibrate' in navigator) {
+                  navigator.vibrate(50); // vibrate for 50ms
+                }
+              }
+            }}
+            onTouchEnd={() => {
+              spacePressed.current = false;
+              canShoot.current = true;
+            }}
+          >
+            🚀 Fire
+          </button>
+        </div>
       </div>
     </div>
-  </div>
   );
 };
 

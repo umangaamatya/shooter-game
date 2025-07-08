@@ -7,7 +7,6 @@
   box-sizing: border-box;
 }
 
-
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -49,11 +48,15 @@ html,
 body {
   margin: 0;
   padding: 0;
-  overflow: hidden; /* Prevent scrolling */
+  overflow: hidden;
   height: 100%;
   width: 100%;
-  touch-action: none; /* Prevent touch gestures like scroll/zoom */
-  background-color: black;
+  touch-action: none;
+  background-color: black !important;
+  display: block !important;
+  place-items: unset !important;
+  min-width: unset !important;
+  min-height: unset !important;
 }
 
 .space-game-container {
@@ -78,94 +81,80 @@ body {
   box-sizing: border-box;
 }
 
-/* Buttons */
-.space-game-button {
-  margin-top: 10px;
-  padding: 0.5rem 1rem;
-  background-color: #39ff14;
-  color: black;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.space-game-button:hover {
-  background-color: #2be90d;
-}
-
-.shoot-btn {
-  font-size: 1.5rem;
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  background: none;
-  border: 2px solid #39ff14;
-  border-radius: 50%;
-  color: #39ff14;
-  width: 60px;
-  height: 60px;
-  text-align: center;
-  line-height: 60px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.shoot-btn:active {
-  background-color: #39ff1433;
-}
-
-
+/* GameBoy-style Controls */
 .gameboy-controls {
   position: absolute;
-  bottom: 10px;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
+  max-width: 500px;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
+  align-items: flex-end;
   padding: 0 20px;
   box-sizing: border-box;
+  gap: 20px;
 }
 
-.control-left,
-.control-right {
+.control-group {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  align-items: center;
+  flex: 1;
+  min-width: 70px;
 }
 
-.control-center {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.control-btn {
+button.control-btn {
+  all: unset;
   font-size: 1.5rem;
-  padding: 12px 16px;
-  border-radius: 10px;
+  padding: 14px 18px;
+  border-radius: 12px;
   background-color: #1f1f1f;
   color: #39ff14;
   border: 2px solid #39ff14;
   font-weight: bold;
   cursor: pointer;
   box-shadow: 0 0 5px #39ff14;
-  transition: background 0.3s;
+  text-align: center;
+  transition: all 0.2s ease;
+  user-select: none;
 }
 
-.control-btn:active {
+button.control-btn:active {
   background-color: #39ff1444;
+  transform: scale(0.96);
 }
 
-.restart-btn {
+/* Specific buttons */
+button.restart-btn {
   background-color: #222;
-  border-color: #fff;
-  color: #fff;
+  border-color: #ffffff;
+  color: #ffffff;
 }
 
-.fire-btn {
+button.fire-btn {
   background-color: #000;
   border-color: #ff4444;
   color: #ff4444;
+}
+
+/* Unused shoot button hidden */
+.shoot-btn {
+  display: none;
+}
+
+/* Mobile enhancements */
+@media (max-width: 500px) {
+  .control-btn {
+    padding: 10px 14px;
+    font-size: 1.2rem;
+  }
+
+  .gameboy-controls {
+    gap: 10px;
+    padding: 0 10px;
+  }
 }
