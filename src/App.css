@@ -1,9 +1,12 @@
+/* General App Styling */
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  box-sizing: border-box;
 }
+
 
 .logo {
   height: 6em;
@@ -41,6 +44,18 @@
   color: #888;
 }
 
+/* Space Game Styling */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent scrolling */
+  height: 100%;
+  width: 100%;
+  touch-action: none; /* Prevent touch gestures like scroll/zoom */
+  background-color: black;
+}
+
 .space-game-container {
   display: flex;
   flex-direction: column;
@@ -49,10 +64,10 @@
   background-color: black;
   color: #39ff14;
   height: 100vh;
-  width: 100%;
-  text-align: center;
+  width: 100vw;
   padding: 1rem;
   box-sizing: border-box;
+  position: relative;
 }
 
 .space-game-canvas {
@@ -60,17 +75,97 @@
   max-width: 100%;
   height: auto;
   touch-action: none;
+  box-sizing: border-box;
 }
 
+/* Buttons */
 .space-game-button {
   margin-top: 10px;
+  padding: 0.5rem 1rem;
+  background-color: #39ff14;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.space-game-button:hover {
+  background-color: #2be90d;
 }
 
 .shoot-btn {
-  font-size: 24px;
-  margin-top: 20px;
+  font-size: 1.5rem;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
   background: none;
-  border: none;
+  border: 2px solid #39ff14;
+  border-radius: 50%;
   color: #39ff14;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  line-height: 60px;
   cursor: pointer;
+  transition: background 0.3s;
+}
+
+.shoot-btn:active {
+  background-color: #39ff1433;
+}
+
+
+.gameboy-controls {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.control-left,
+.control-right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.control-center {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.control-btn {
+  font-size: 1.5rem;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background-color: #1f1f1f;
+  color: #39ff14;
+  border: 2px solid #39ff14;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 5px #39ff14;
+  transition: background 0.3s;
+}
+
+.control-btn:active {
+  background-color: #39ff1444;
+}
+
+.restart-btn {
+  background-color: #222;
+  border-color: #fff;
+  color: #fff;
+}
+
+.fire-btn {
+  background-color: #000;
+  border-color: #ff4444;
+  color: #ff4444;
 }
