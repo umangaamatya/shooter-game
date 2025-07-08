@@ -203,27 +203,28 @@ const SpaceGame = () => {
   }, []);
 
   return (
-    <div className="space-game-container">
-      <h1>Evil Eye Armada</h1>
+    <div className="flex flex-col items-center justify-center bg-black text-neon-green h-screen w-screen p-4 box-border relative">
+      <h1 className="text-5xl leading-tight mb-4">Evil Eye Armada</h1>
 
       <canvas
         ref={canvasRef}
         width={canvasSize.width}
         height={canvasSize.height}
-        className="space-game-canvas"
+        className="border-2 border-neon-green max-w-full h-auto box-border"
+        style={{ touchAction: 'none' }}
       />
 
-      <div className="gameboy-controls">
-        <div className="control-group control-left">
+      <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 w-full max-w-lg flex flex-row justify-between items-end px-5 box-border gap-5">
+        <div className="flex flex-col gap-2.5 items-center flex-1 min-w-[70px]">
           <button
-            className="control-btn"
+            className="text-2xl py-3 px-4 rounded-xl bg-gray-800 text-neon-green border-2 border-neon-green font-bold cursor-pointer shadow-neon-green text-center transition-all duration-200 select-none active:bg-neon-green active:bg-opacity-25 active:scale-95 md:py-2 md:px-3 md:text-xl"
             onTouchStart={() => (leftPressed.current = true)}
             onTouchEnd={() => (leftPressed.current = false)}
           >
             ⬅
           </button>
           <button
-            className="control-btn"
+            className="text-2xl py-3 px-4 rounded-xl bg-gray-800 text-neon-green border-2 border-neon-green font-bold cursor-pointer shadow-neon-green text-center transition-all duration-200 select-none active:bg-neon-green active:bg-opacity-25 active:scale-95 md:py-2 md:px-3 md:text-xl"
             onTouchStart={() => (rightPressed.current = true)}
             onTouchEnd={() => (rightPressed.current = false)}
           >
@@ -231,18 +232,18 @@ const SpaceGame = () => {
           </button>
         </div>
 
-        <div className="control-group control-center">
+        <div className="flex flex-col gap-2.5 items-center flex-1 min-w-[70px]">
           <button
-            className="control-btn restart-btn"
+            className="text-2xl py-3 px-4 rounded-xl bg-gray-900 text-white border-2 border-white font-bold cursor-pointer shadow-neon-green text-center transition-all duration-200 select-none active:bg-neon-green active:bg-opacity-25 active:scale-95 md:py-2 md:px-3 md:text-xl"
             onClick={() => window.location.reload()}
           >
             🔁 Restart
           </button>
         </div>
 
-        <div className="control-group control-right">
+        <div className="flex flex-col gap-2.5 items-center flex-1 min-w-[70px]">
           <button
-            className="control-btn fire-btn"
+            className="text-2xl py-3 px-4 rounded-xl bg-black text-neon-red border-2 border-neon-red font-bold cursor-pointer shadow-neon-green text-center transition-all duration-200 select-none active:bg-neon-green active:bg-opacity-25 active:scale-95 md:py-2 md:px-3 md:text-xl"
             onTouchStart={() => {
               if (canShoot.current) {
                 spacePressed.current = true;
